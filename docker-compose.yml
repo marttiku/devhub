@@ -1,0 +1,18 @@
+services:
+  devhub:
+    build: .
+    image: devhub:latest
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-4242}:4242"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /Users/martti.kuldma/Coding:/projects:ro
+    environment:
+      HOST_CODING_ROOT: ${HOST_CODING_ROOT:-/Users/martti.kuldma/Coding}
+      CONTAINER_PROJECTS_PATH: /projects
+      API_PORT: "4242"
+      HOST_HELPER_PORT: ${HOST_HELPER_PORT:-4243}
+      SCAN_INTERVAL_MS: ${SCAN_INTERVAL_MS:-60000}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
