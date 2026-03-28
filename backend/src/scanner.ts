@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { config, containerPathToHost } from './config';
 
 export type ProjectType = 'node' | 'python' | 'go' | 'other';
@@ -69,7 +69,7 @@ export function inferDescription(containerPath: string): string {
 
 function gitExec(cwd: string, args: string[]): string {
   try {
-    return execSync(`git ${args.join(' ')}`, { cwd, encoding: 'utf8', timeout: 3000 }).trim();
+    return execFileSync('git', args, { cwd, encoding: 'utf8', timeout: 3000 }).trim();
   } catch {
     return '';
   }
