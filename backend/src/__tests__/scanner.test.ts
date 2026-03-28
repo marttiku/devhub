@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 // We'll test the pure transform functions, not the fs side
 import { detectProjectType, parseGitRemote, inferDescription } from '../scanner';
+import { normalizeContainerName } from '../docker';
 
 describe('detectProjectType', () => {
   it('returns node when package.json exists', () => {
@@ -33,5 +34,22 @@ describe('parseGitRemote', () => {
   });
   it('returns null for empty remote', () => {
     expect(parseGitRemote('')).toBeNull();
+  });
+});
+
+describe('normalizeContainerName', () => {
+  it('strips -service-N suffix (compose v2)', () => {
+    expect(normalizeContainerName('honcho-api-1')).toBe('honcho');
+    expect(normalizeContainerName('honcho-redis-1')).toBe('honcho');
+    expect(normalizeContainerName('my-app-web-1')).toBe('my-app');
+  });
+  it('strips _service_N suffix (compose v1)', () => {
+    expect(normalizeContainerName('myapp_web_1')).toBe('myapp');
+  });
+  it('strips leading slash', () => {
+    expect(normalizeContainerName('/postgres')).toBe('postgres');
+  });
+  it('leaves standalone container names alone', () => {
+    expect(normalizeContainerName('postgres')).toBe('postgres');
   });
 });
