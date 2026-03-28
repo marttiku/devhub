@@ -1,0 +1,8 @@
+{
+  "name": "devhub-host-helper",
+  "version": "1.0.0",
+  "description": "DevHub host helper — handles macOS open/cursor commands from Docker container",
+  "main": "index.js",
+  "scripts": { "start": "node index.js" },
+  "dependencies": {}
+}
